@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 19:24:00 by corellan          #+#    #+#             */
-/*   Updated: 2023/11/27 13:33:59 by corellan         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:38:03 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ typedef struct s_data
 	int	length;
 }	t_data;
 
-char	**ft_parser(char *str);
+char	**ft_get_split(char *str);
 
 #endif
