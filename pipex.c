@@ -6,31 +6,15 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:19:12 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/21 15:59:38 by corellan         ###   ########.fr       */
+/*   Updated: 2023/12/21 18:19:35 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static char	*find_path(char *input, t_pipex *pipex)
+static void	execute_command(t_pipex *pipex)
 {
-	char	*path;
-	char	**possibles;
-	size_t	size_split;
-	size_t	index;
-
-	path = NULL;
-	if (!ft_strlen(input))
-		return (ft_strdup(""));
-	if (!access(input, F_OK | X_OK))
-		return (ft_strdup(input));
-	size_split = ft_split_length(pipex->envp);
-	index = find_in_env(pipex->envp, "PATH=");
-	if (index == size_split || !pipex->envp[index][5])
-		return (ft_strdup(""));
-	possibles = ft_split(pipex->envp + 5, ':');
-	if (!possibles)
-		return (NULL);
+	
 }
 
 static int	process_cmd(char *input, t_pipex *pipex)
@@ -41,17 +25,36 @@ static int	process_cmd(char *input, t_pipex *pipex)
 	pipex->path = find_path(input, pipex);
 	if (!(pipex->path))
 		return (PATHALLOC);
+	if (pipex->i < (pipex->ammount_cmd - 1) && pipe(pipex->pipes) == -1)
+		return (PIPEERROR);
+	if (pipex->i == 0)
+		pipex->fd[INPUT] = pipex->infile;
+	if (pipex->i == (pipex->ammount_cmd - 1))
+		pipex->fd[OUTPUT] = pipex->outfile;
+	else
+		pipex->fd[OUTPUT] = pipex->pipes[OUTPUT];
+	pipex->pid[pipex->i] = fork();
+	if (!pipex->pid)
+		execute_command(pipex);
+	close(pipex->fd[OUTPUT]);
+	close(pipex->fd[INPUT]);
+	if (pipex->i < (pipex->ammount_cmd - 1))
+	{
+		pipex->fd[INPUT] = dup(pipex->pipes[INPUT]);
+		close(pipex->pipes[INPUT]);
+	}
+	return (NOERROR);
 }
 
 static int	ft_pipex(int ac, char **av, t_pipex *pipex)
 {
-	pipex->fd[INFILE] = open(av[1], O_RDONLY);
-	if (pipex->fd[INFILE] == -1)
+	pipex->infile = open(av[1], O_RDONLY);
+	if (pipex->infile == -1)
 		print_error(OPENIN, av[1]);
-	pipex->fd[OUTFILE] = open(av[ac - 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (pipex->fd[OUTFILE] == -1)
+	pipex->outfile = open(av[ac - 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (pipex->outfile == -1)
 		print_error(OPENOUT, av[ac - 1]);
-	if (pipex->fd[INFILE] == -1 && pipex->fd[OUTFILE] == -1)
+	if (pipex->infile == -1 && pipex->outfile == -1)
 		return (1);
 	pipex->pid = (pid_t *)malloc(sizeof(pid_t) * pipex->ammount_cmd);
 	if (!pipex->pid)
