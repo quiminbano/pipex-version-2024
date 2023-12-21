@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_utils.c                                      :+:      :+:    :+:   */
+/*   ft_split_length.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/03 20:58:51 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/21 15:25:04 by corellan         ###   ########.fr       */
+/*   Created: 2023/12/21 15:10:17 by corellan          #+#    #+#             */
+/*   Updated: 2023/12/21 15:16:16 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	find_in_env(char **envp, char *needle)
+size_t	ft_split_length(char **arr)
 {
 	size_t	i;
 
 	i = 0;
-	while (ft_strncmp(envp[i], needle, ft_strlen(needle)))
+	while (arr[i])
 		i++;
 	return (i);
 }

@@ -6,35 +6,13 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 09:59:49 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/02 14:38:09 by corellan         ###   ########.fr       */
+/*   Updated: 2023/12/09 20:11:33 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static int	ft_flag_identifier(char const *str, int flag)
-{
-	if ((flag == NORMAL) && (*str == 39))
-		return (SINGLE);
-	else if ((flag == SINGLE) && (*str == 39))
-		return (ENDSINGLE);
-	else if ((flag == NORMAL) && (*str == 34))
-		return (DOUBLE);
-	else if ((flag == DOUBLE) && (*str == 34))
-		return (ENDDOUBLE);
-	else if ((flag == DOUBLE) && *str == 92)
-		return (SLASHDQUOTE);
-	else if ((flag == NORMAL) && (*str == 92) && (*(str + 1) == 34 || \
-		*(str + 1) == 39))
-		return (SLASH);
-	else if (flag == SLASH)
-		return (NORMAL);
-	else if (flag == SLASHDQUOTE)
-		return (DOUBLE);
-	return (flag);
-}
-
-static int	ft_strlen_pos(char const *org, int start)
+static size_t	ft_strlen_pos(char const *org, int start)
 {
 	int		i;
 	int		flag;
@@ -60,20 +38,10 @@ static int	ft_strlen_pos(char const *org, int start)
 	return (i);
 }
 
-static int	ft_index_after_char(char *str, int pos)
+static size_t	ft_words(char const *str)
 {
-	int	i;
-
-	i = 0;
-	while (str[i + pos] == 32)
-		i++;
-	return (i + pos);
-}
-
-static int	ft_words(char const *str)
-{
-	int	i;
-	int	flag;
+	size_t	i;
+	int		flag;
 
 	i = 0;
 	flag = NORMAL;
@@ -109,7 +77,7 @@ char	**ft_get_split(char *str)
 	{
 		data.index = ft_index_after_char(str, data.index);
 		data.length = ft_strlen_pos(str, data.index);
-		split[data.i] = ft_substr(str, (int)data.index, (int)data.length);
+		split[data.i] = ft_substr(str, data.index, data.length);
 		if (!split[data.i])
 		{
 			ft_free_split(split);
