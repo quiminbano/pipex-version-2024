@@ -6,11 +6,30 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 20:58:51 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/21 15:25:04 by corellan         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:59:59 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "pipex.h"
+
+void	free_interface(t_pipex *pipex)
+{
+	if (pipex->pid)
+	{
+		free(pipex->pid);
+		pipex->pid = NULL;
+	}
+	if (pipex->cmd)
+	{
+		ft_free_split(pipex->cmd);
+		pipex->cmd = NULL;
+	}
+	if (pipex->path)
+	{
+		free(pipex->path);
+		pipex->path = NULL;
+	}
+}
 
 size_t	find_in_env(char **envp, char *needle)
 {

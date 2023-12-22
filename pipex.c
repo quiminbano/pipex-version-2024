@@ -6,15 +6,48 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:19:12 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/21 18:19:35 by corellan         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:54:31 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	execute_command(t_pipex *pipex)
+static void	run_child_process(t_pipex *pipex)
 {
-	
+	dup2(pipex->fd[OUTPUT], STDOUT_FILENO);
+	close(pipex->fd[OUTPUT]);
+	dup2(pipex->fd[INPUT], STDIN_FILENO);
+	close(pipex->fd[INPUT]);
+	if (pipex->i < (pipex->ammount_cmd - 1))
+	{
+		close(pipex->pipes[INPUT]);
+		close(pipex->outfile);
+	}
+	if (pipex->error_flag != NOERROR || \
+		execve(pipex->path, pipex->cmd, pipex->envp) == -1)
+	{
+		print_error(pipex->error_flag, pipex->cmd[0]);
+		free_interface(pipex);
+		exit(EXIT_FAILURE);
+	}
+}
+
+static int	execute_and_close(t_pipex *pipex)
+{
+	if (!pipex->pid)
+		run_child_process(pipex);
+	close(pipex->fd[OUTPUT]);
+	close(pipex->fd[INPUT]);
+	if (pipex->i < (pipex->ammount_cmd - 1))
+	{
+		pipex->fd[INPUT] = dup(pipex->pipes[INPUT]);
+		close(pipex->pipes[INPUT]);
+	}
+	free(pipex->path);
+	pipex->path = NULL;
+	ft_free_split(pipex->cmd);
+	pipex->cmd = NULL;
+	return (NOERROR);
 }
 
 static int	process_cmd(char *input, t_pipex *pipex)
@@ -34,16 +67,9 @@ static int	process_cmd(char *input, t_pipex *pipex)
 	else
 		pipex->fd[OUTPUT] = pipex->pipes[OUTPUT];
 	pipex->pid[pipex->i] = fork();
-	if (!pipex->pid)
-		execute_command(pipex);
-	close(pipex->fd[OUTPUT]);
-	close(pipex->fd[INPUT]);
-	if (pipex->i < (pipex->ammount_cmd - 1))
-	{
-		pipex->fd[INPUT] = dup(pipex->pipes[INPUT]);
-		close(pipex->pipes[INPUT]);
-	}
-	return (NOERROR);
+	if (pipex->pid[pipex->i] == -1)
+		return (FORKERROR);
+	return (execute_and_close(pipex));
 }
 
 static int	ft_pipex(int ac, char **av, t_pipex *pipex)
@@ -64,6 +90,7 @@ static int	ft_pipex(int ac, char **av, t_pipex *pipex)
 		pipex->error_return = process_cmd(av[(pipex->i) + 2], pipex);
 		if (pipex->error_return)
 			return (handle_system_error(pipex, pipex->error_return));
+		pipex->error_flag = NOERROR;
 		(pipex->i)++;
 	}
 	pipex->i = 0;

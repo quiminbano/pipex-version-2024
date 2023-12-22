@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:37:53 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/21 16:48:33 by corellan         ###   ########.fr       */
+/*   Updated: 2023/12/22 14:18:15 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static char	*match_path(char *input, t_pipex *pipex, char **possibles)
 		if (!access(path, F_OK | X_OK))
 		{
 			ft_free_split(possibles);
+			possibles = NULL;
 			return (path);
 		}
 		free(path);
@@ -34,6 +35,7 @@ static char	*match_path(char *input, t_pipex *pipex, char **possibles)
 		i++;
 	}
 	ft_free_split(possibles);
+	possibles = NULL;
 	pipex->error_flag = NOTFOUND;
 	return (ft_strdup(""));
 }
@@ -58,7 +60,7 @@ char	*find_path(char *input, t_pipex *pipex)
 		pipex->error_flag = NOPATH;
 		return (ft_strdup(""));
 	}
-	possibles = ft_split(pipex->envp + 5, ':');
+	possibles = ft_split((pipex->envp[index]) + 5, ':');
 	if (!possibles)
 		return (NULL);
 	return (match_path(input, pipex, possibles));

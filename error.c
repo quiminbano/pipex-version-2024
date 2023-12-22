@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 12:39:11 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/21 17:22:58 by corellan         ###   ########.fr       */
+/*   Updated: 2023/12/22 14:21:40 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,15 @@
 
 void	print_error(int error, char *str)
 {
-	ft_putendl_fd("pipex: ", 2);
-	ft_putend_fd(str, 2);
+	ft_putstr_fd("pipex: ", 2);
+	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": ", 2);
-	if (error == OPENIN || error == OPENOUT)
+	if (error == OPENIN || error == OPENOUT || error == NOPATH)
 		ft_putendl_fd(strerror(2), 2);
 	else if (error == PIDALLOC || error == PATHALLOC || error == CMDALLOC)
 		ft_putendl_fd(strerror(12), 2);
-}
-
-void	free_interface(t_pipex *pipex)
-{
-	if (pipex->pid)
-	{
-		free(pipex->pid);
-		pipex->pid = NULL;
-	}
-	if (pipex->cmd)
-	{
-		ft_free_split(pipex->cmd);
-		pipex->cmd = NULL;
-	}
-	if (pipex->path)
-	{
-		free(pipex->path);
-		pipex->path = NULL;
-	}
+	else if (error == EMPTYCOMMAND || error == NOTFOUND)
+		ft_putendl_fd("command not found", 2);
 }
 
 int	handle_system_error(t_pipex *pipex, int error)
