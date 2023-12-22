@@ -6,13 +6,41 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:37:53 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/22 14:18:15 by corellan         ###   ########.fr       */
+/*   Updated: 2023/12/22 16:04:24 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static char	*match_path(char *input, t_pipex *pipex, char **possibles)
+static char	**make_possibles(size_t index, t_pipex *pipex)
+{
+	char	**possibles;
+	char	*temp;
+	size_t	i;
+
+	possibles = ft_split(pipex->envp[index] + 5, ':');
+	if (!possibles)
+		return (NULL);
+	i = 0;
+	while (possibles[i])
+	{
+		temp = ft_strjoin(possibles[i], "/");
+		if (!temp)
+		{
+			ft_free_split(possibles);
+			possibles = NULL;
+			return (NULL);
+		}
+		free(possibles[i]);
+		possibles[i] = NULL;
+		possibles[i] = temp;
+		temp = NULL;
+		i++;
+	}
+	return (possibles);
+}
+
+static char	*match_path(t_pipex *pipex, char **possibles)
 {
 	size_t	i;
 	char	*path;
@@ -21,7 +49,7 @@ static char	*match_path(char *input, t_pipex *pipex, char **possibles)
 	path = NULL;
 	while (possibles[i])
 	{
-		path = ft_strjoin(possibles[i], input);
+		path = ft_strjoin(possibles[i], pipex->cmd[0]);
 		if (!path)
 			return (NULL);
 		if (!access(path, F_OK | X_OK))
@@ -46,12 +74,7 @@ char	*find_path(char *input, t_pipex *pipex)
 	size_t	size_split;
 	size_t	index;
 
-	if (!ft_strlen(input))
-	{
-		pipex->error_flag = EMPTYCOMMAND;
-		return (ft_strdup(""));
-	}
-	if (!access(input, F_OK | X_OK))
+	if (ft_strlen(input) && !access(input, F_OK | X_OK))
 		return (ft_strdup(input));
 	size_split = ft_split_length(pipex->envp);
 	index = find_in_env(pipex->envp, "PATH=");
@@ -60,8 +83,13 @@ char	*find_path(char *input, t_pipex *pipex)
 		pipex->error_flag = NOPATH;
 		return (ft_strdup(""));
 	}
-	possibles = ft_split((pipex->envp[index]) + 5, ':');
+	if (!ft_strlen(input))
+	{
+		pipex->error_flag = EMPTYCOMMAND;
+		return (ft_strdup(""));
+	}
+	possibles = make_possibles(index, pipex);
 	if (!possibles)
 		return (NULL);
-	return (match_path(input, pipex, possibles));
+	return (match_path(pipex, possibles));
 }

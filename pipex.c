@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:19:12 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/22 11:54:31 by corellan         ###   ########.fr       */
+/*   Updated: 2023/12/22 16:11:46 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ static void	run_child_process(t_pipex *pipex)
 	if (pipex->error_flag != NOERROR || \
 		execve(pipex->path, pipex->cmd, pipex->envp) == -1)
 	{
-		print_error(pipex->error_flag, pipex->cmd[0]);
+		if (!pipex->cmd[0])
+			print_error(pipex->error_flag, "");
+		else
+			print_error(pipex->error_flag, pipex->cmd[0]);
 		free_interface(pipex);
 		exit(EXIT_FAILURE);
 	}
@@ -34,7 +37,7 @@ static void	run_child_process(t_pipex *pipex)
 
 static int	execute_and_close(t_pipex *pipex)
 {
-	if (!pipex->pid)
+	if (!pipex->pid[pipex->i])
 		run_child_process(pipex);
 	close(pipex->fd[OUTPUT]);
 	close(pipex->fd[INPUT]);
@@ -97,6 +100,7 @@ static int	ft_pipex(int ac, char **av, t_pipex *pipex)
 	while (pipex->i < pipex->ammount_cmd)
 		waitpid(pipex->pid[(pipex->i)++], NULL, 0);
 	free_interface(pipex);
+	while (1) { }
 	return (0);
 }
 
