@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:20:22 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/21 17:39:40 by corellan         ###   ########.fr       */
+/*   Updated: 2023/12/22 18:51:05 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,6 @@ int		handle_system_error(t_pipex *pipex, int error);
 void	free_interface(t_pipex *pipex);
 size_t	find_in_env(char **envp, char *needle);
 char	*find_path(char *input, t_pipex *pipex);
+int		process_cmd(char *input, t_pipex *pipex);
 
 #endif

@@ -6,13 +6,13 @@
 #    By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/22 14:06:32 by corellan          #+#    #+#              #
-#    Updated: 2023/12/22 16:12:10 by corellan         ###   ########.fr        #
+#    Updated: 2023/12/22 18:50:34 by corellan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
 
-SRC = pipex.c pipex_utils.c find_path.c error.c
+SRC = pipex.c pipex_utils.c find_path.c error.c execution.c
 
 OBJ = $(SRC:.c=.o)
 

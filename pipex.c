@@ -6,74 +6,11 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:19:12 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/22 16:11:46 by corellan         ###   ########.fr       */
+/*   Updated: 2023/12/22 18:49:56 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-static void	run_child_process(t_pipex *pipex)
-{
-	dup2(pipex->fd[OUTPUT], STDOUT_FILENO);
-	close(pipex->fd[OUTPUT]);
-	dup2(pipex->fd[INPUT], STDIN_FILENO);
-	close(pipex->fd[INPUT]);
-	if (pipex->i < (pipex->ammount_cmd - 1))
-	{
-		close(pipex->pipes[INPUT]);
-		close(pipex->outfile);
-	}
-	if (pipex->error_flag != NOERROR || \
-		execve(pipex->path, pipex->cmd, pipex->envp) == -1)
-	{
-		if (!pipex->cmd[0])
-			print_error(pipex->error_flag, "");
-		else
-			print_error(pipex->error_flag, pipex->cmd[0]);
-		free_interface(pipex);
-		exit(EXIT_FAILURE);
-	}
-}
-
-static int	execute_and_close(t_pipex *pipex)
-{
-	if (!pipex->pid[pipex->i])
-		run_child_process(pipex);
-	close(pipex->fd[OUTPUT]);
-	close(pipex->fd[INPUT]);
-	if (pipex->i < (pipex->ammount_cmd - 1))
-	{
-		pipex->fd[INPUT] = dup(pipex->pipes[INPUT]);
-		close(pipex->pipes[INPUT]);
-	}
-	free(pipex->path);
-	pipex->path = NULL;
-	ft_free_split(pipex->cmd);
-	pipex->cmd = NULL;
-	return (NOERROR);
-}
-
-static int	process_cmd(char *input, t_pipex *pipex)
-{
-	pipex->cmd = ft_split(input, ' ');
-	if (!(pipex->cmd))
-		return (CMDALLOC);
-	pipex->path = find_path(input, pipex);
-	if (!(pipex->path))
-		return (PATHALLOC);
-	if (pipex->i < (pipex->ammount_cmd - 1) && pipe(pipex->pipes) == -1)
-		return (PIPEERROR);
-	if (pipex->i == 0)
-		pipex->fd[INPUT] = pipex->infile;
-	if (pipex->i == (pipex->ammount_cmd - 1))
-		pipex->fd[OUTPUT] = pipex->outfile;
-	else
-		pipex->fd[OUTPUT] = pipex->pipes[OUTPUT];
-	pipex->pid[pipex->i] = fork();
-	if (pipex->pid[pipex->i] == -1)
-		return (FORKERROR);
-	return (execute_and_close(pipex));
-}
 
 static int	ft_pipex(int ac, char **av, t_pipex *pipex)
 {
@@ -100,7 +37,6 @@ static int	ft_pipex(int ac, char **av, t_pipex *pipex)
 	while (pipex->i < pipex->ammount_cmd)
 		waitpid(pipex->pid[(pipex->i)++], NULL, 0);
 	free_interface(pipex);
-	while (1) { }
 	return (0);
 }
 
