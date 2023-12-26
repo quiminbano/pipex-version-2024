@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:20:22 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/22 18:51:05 by corellan         ###   ########.fr       */
+/*   Updated: 2023/12/26 21:38:49 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft/libft.h"
 # include <fcntl.h>
 # include <string.h>
+# include <stdio.h>
 
 # define MAX_FD 2
 # define INPUT 0
@@ -31,13 +32,14 @@ typedef struct s_pipex
 	int		i;
 	int		error_return;
 	int		error_flag;
+	int		return_value;
 	pid_t	*pid;
 	char	*path;
 	char	**envp;
 	char	**cmd;
 }	t_pipex;
 
-enum e_error
+typedef enum e_error
 {
 	NOERROR,
 	OPENIN,
@@ -49,7 +51,8 @@ enum e_error
 	FORKERROR,
 	EMPTYCOMMAND,
 	NOPATH,
-	NOTFOUND
+	NOTFOUND,
+	DIRECTORY
 }	t_error;
 
 void	print_error(int error, char *str);

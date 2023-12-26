@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:19:12 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/22 18:49:56 by corellan         ###   ########.fr       */
+/*   Updated: 2023/12/26 21:47:03 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,15 @@ static int	ft_pipex(int ac, char **av, t_pipex *pipex)
 		pipex->error_return = process_cmd(av[(pipex->i) + 2], pipex);
 		if (pipex->error_return)
 			return (handle_system_error(pipex, pipex->error_return));
-		pipex->error_flag = NOERROR;
+		if (pipex->error_flag)
+			pipex->error_return = 1;
 		(pipex->i)++;
 	}
 	pipex->i = 0;
 	while (pipex->i < pipex->ammount_cmd)
 		waitpid(pipex->pid[(pipex->i)++], NULL, 0);
 	free_interface(pipex);
-	return (0);
+	return (pipex->error_return);
 }
 
 int	main(int ac, char **av, char **envp)
