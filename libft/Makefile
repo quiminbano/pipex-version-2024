@@ -6,7 +6,7 @@
 #    By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:00:04 by corellan          #+#    #+#              #
-#    Updated: 2023/12/22 15:39:49 by corellan         ###   ########.fr        #
+#    Updated: 2023/12/28 23:23:07 by corellan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,11 @@ ft_free_split.c ft_split_length.c
 
 SRC_B = ft_lstadd_back_bonus.c ft_lstadd_front_bonus.c ft_lstclear_bonus.c \
 ft_lstdelone_bonus.c ft_lstiter_bonus.c ft_lstlast_bonus.c ft_lstmap_bonus.c \
-ft_lstnew_bonus.c ft_lstsize_bonus.c $(SRC)
+ft_lstnew_bonus.c ft_lstsize_bonus.c
+
+GNL_SRC = $(addprefix gnl/, get_next_line.c get_next_line_utils.c)
+
+GNL_OUT = $(GNL_SRC:.c=.o)
 
 OUT = $(SRC:.c=.o)
 
@@ -34,18 +38,21 @@ CC = cc
 
 all: $(NAME)
 
-$(NAME): $(OUT)
-		$(CC) $(FLAGS) -c $(SRC)
+$(NAME): $(OUT) $(GNL_OUT)
 		ar rcs $(NAME) $(OUT)
 
-bonus: $(OUT_B)
+bonus: .bonus
 
-$(OUT_B):
-		$(CC) $(FLAGS) -c $(SRC_B)
-		ar rus $(NAME) $(OUT_B)
+.bonus: $(OUT_B) $(OUT) $(GNL_OUT)
+		ar rus $(NAME) $(OUT) $(OUT_B)
+		@touch .bonus
+
+%.o: %.c
+		$(CC) $(FLAGS) -I. -c $< -o $@
 
 clean:
-		rm -f $(OUT) $(OUT_B)
+		rm -f $(OUT) $(OUT_B) $(GNL_OUT)
+		@rm -f .bonus
 
 fclean: clean
 		rm -f $(NAME)
