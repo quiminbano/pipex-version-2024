@@ -6,7 +6,7 @@
 #    By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:00:04 by corellan          #+#    #+#              #
-#    Updated: 2023/12/28 23:23:07 by corellan         ###   ########.fr        #
+#    Updated: 2023/12/28 23:56:43 by corellan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,19 +32,19 @@ OUT = $(SRC:.c=.o)
 
 OUT_B = $(SRC_B:.c=.o)
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -fsanitize=address -g -static-libsan
 
 CC = cc
 
 all: $(NAME)
 
 $(NAME): $(OUT) $(GNL_OUT)
-		ar rcs $(NAME) $(OUT)
+		ar rcs $(NAME) $(OUT) $(GNL_OUT)
 
 bonus: .bonus
 
 .bonus: $(OUT_B) $(OUT) $(GNL_OUT)
-		ar rus $(NAME) $(OUT) $(OUT_B)
+		ar rus $(NAME) $(OUT) $(OUT_B) $(GNL_OUT)
 		@touch .bonus
 
 %.o: %.c
