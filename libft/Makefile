@@ -6,7 +6,7 @@
 #    By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:00:04 by corellan          #+#    #+#              #
-#    Updated: 2023/12/28 23:56:43 by corellan         ###   ########.fr        #
+#    Updated: 2023/12/29 18:21:50 by corellan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ OUT = $(SRC:.c=.o)
 
 OUT_B = $(SRC_B:.c=.o)
 
-FLAGS = -Wall -Wextra -Werror -fsanitize=address -g -static-libsan
+FLAGS = -Wall -Wextra -Werror
 
 CC = cc
 

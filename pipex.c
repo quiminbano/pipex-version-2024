@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:19:12 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/26 21:47:03 by corellan         ###   ########.fr       */
+/*   Updated: 2023/12/29 17:48:38 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,7 @@ static int	ft_pipex(int ac, char **av, t_pipex *pipex)
 			pipex->error_return = 1;
 		(pipex->i)++;
 	}
-	pipex->i = 0;
-	while (pipex->i < pipex->ammount_cmd)
-		waitpid(pipex->pid[(pipex->i)++], NULL, 0);
+	wait_interface(pipex);
 	free_interface(pipex);
 	return (pipex->error_return);
 }
