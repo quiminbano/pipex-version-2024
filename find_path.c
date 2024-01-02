@@ -6,11 +6,19 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:37:53 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/22 16:04:24 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/02 15:05:46 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+static void	check_exec_permission(char *path, t_pipex *pipex)
+{
+	if (access(path, X_OK))
+		pipex->error_flag = NOPERMISION;
+	else
+		pipex->error_flag = NOERROR;
+}
 
 static char	**make_possibles(size_t index, t_pipex *pipex)
 {
@@ -40,32 +48,58 @@ static char	**make_possibles(size_t index, t_pipex *pipex)
 	return (possibles);
 }
 
-static char	*match_path(t_pipex *pipex, char **possibles)
+static char	*match_path(t_pipex *pipex, char ***possibles)
 {
 	size_t	i;
 	char	*path;
 
 	i = 0;
 	path = NULL;
-	while (possibles[i])
+	while ((*possibles)[i])
 	{
-		path = ft_strjoin(possibles[i], pipex->cmd[0]);
+		path = ft_strjoin((*possibles)[i], pipex->cmd[0]);
 		if (!path)
 			return (NULL);
-		if (!access(path, F_OK | X_OK))
+		if (!access(path, F_OK))
 		{
-			ft_free_split(possibles);
-			possibles = NULL;
+			ft_free_split(*possibles);
+			(*possibles) = NULL;
+			check_exec_permission(path, pipex);
 			return (path);
 		}
 		free(path);
 		path = NULL;
 		i++;
 	}
-	ft_free_split(possibles);
-	possibles = NULL;
+	ft_free_split(*possibles);
+	(*possibles) = NULL;
 	pipex->error_flag = NOTFOUND;
 	return (ft_strdup(""));
+}
+
+static int	check_absolute(char *input, t_pipex *pipex)
+{
+	int	fd;
+
+	fd = 0;
+	if (ft_strncmp(input, "/", 1) && ft_strncmp(input, "./", 2) && \
+		ft_strncmp(input, "../", 3))
+		return (-1);
+	if (access(input, F_OK))
+		pipex->error_flag = NOFILEORDIRECTORY;
+	else
+	{
+		check_absolute(input, pipex);
+		if (pipex->error_flag == NOPERMISION)
+			return (0);
+		fd = open(input, O_DIRECTORY);
+		if (fd != -1)
+		{
+			close (fd);
+			pipex->error_flag = DIRECTORY;
+		}
+	}
+	return (0);
 }
 
 char	*find_path(char *input, t_pipex *pipex)
@@ -74,7 +108,7 @@ char	*find_path(char *input, t_pipex *pipex)
 	size_t	size_split;
 	size_t	index;
 
-	if (ft_strlen(input) && !access(input, F_OK | X_OK))
+	if (input && ft_strlen(input) && !check_absolute(input, pipex))
 		return (ft_strdup(input));
 	size_split = ft_split_length(pipex->envp);
 	index = find_in_env(pipex->envp, "PATH=");
@@ -83,7 +117,7 @@ char	*find_path(char *input, t_pipex *pipex)
 		pipex->error_flag = NOPATH;
 		return (ft_strdup(""));
 	}
-	if (!ft_strlen(input))
+	if (!input || !ft_strlen(input))
 	{
 		pipex->error_flag = EMPTYCOMMAND;
 		return (ft_strdup(""));
@@ -91,5 +125,5 @@ char	*find_path(char *input, t_pipex *pipex)
 	possibles = make_possibles(index, pipex);
 	if (!possibles)
 		return (NULL);
-	return (match_path(pipex, possibles));
+	return (match_path(pipex, &possibles));
 }

@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 12:39:11 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/29 18:19:45 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/02 15:18:23 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,13 @@ static void	close_fd_interface_error(t_pipex *pipex, int error)
 
 void	print_error(int error, char *str)
 {
-	if (error == OPENIN || error == OPENOUT || error == FORKERROR || \
-		error == PIPEERROR)
-		perror("pipex");
-	else
-		ft_putstr_fd("pipex: ", 2);
-	if (error == EMPTYCOMMAND || error == DIRECTORY)
+	ft_putstr_fd("pipex: ", 2);
+	if (error == EMPTYCOMMAND || error == DIRECTORY || error == NOPERMISION)
 		ft_putstr_fd(strerror(13), 2);
 	else if (error == PIDALLOC || error == PATHALLOC || error == CMDALLOC)
 		ft_putstr_fd(strerror(12), 2);
+	else if (error == NOFILEORDIRECTORY)
+		ft_putstr_fd(strerror(2), 2);
 	else if (error == NOPATH || error == NOTFOUND)
 		ft_putstr_fd("command not found", 2);
 	ft_putstr_fd(": ", 2);

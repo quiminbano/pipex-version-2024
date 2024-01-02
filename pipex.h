@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:20:22 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/29 18:18:46 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/02 17:06:29 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,27 @@
 # include <fcntl.h>
 # include <string.h>
 # include <stdio.h>
+# include <sys/wait.h>
 
 # define MAX_FD 2
 # define INPUT 0
 # define OUTPUT 1
+
+typedef enum e_error
+{
+	NOERROR,
+	PIDALLOC,
+	PATHALLOC,
+	CMDALLOC,
+	PIPEERROR,
+	FORKERROR,
+	EMPTYCOMMAND,
+	NOPATH,
+	NOTFOUND,
+	DIRECTORY,
+	NOPERMISION,
+	NOFILEORDIRECTORY
+}	t_error;
 
 typedef struct s_pipex
 {
@@ -31,29 +48,13 @@ typedef struct s_pipex
 	int		pipes[MAX_FD];
 	int		infile;
 	int		outfile;
-	int		error_return;
-	int		error_flag;
-	int		return_value;
+	t_error	error_return;
+	t_error	error_flag;
+	t_error	return_value;
 	pid_t	*pid;
 	size_t	ammount_cmd;
 	size_t	i;
 }	t_pipex;
-
-typedef enum e_error
-{
-	NOERROR,
-	OPENIN,
-	OPENOUT,
-	PIDALLOC,
-	PATHALLOC,
-	CMDALLOC,
-	PIPEERROR,
-	FORKERROR,
-	EMPTYCOMMAND,
-	NOPATH,
-	NOTFOUND,
-	DIRECTORY
-}	t_error;
 
 void	print_error(int error, char *str);
 int		handle_system_error(t_pipex *pipex, int error);

@@ -6,21 +6,32 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:19:12 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/29 17:48:38 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/02 19:50:26 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	ft_pipex(int ac, char **av, t_pipex *pipex)
+static int	files_interface(int ac, char **av, t_pipex *pipex)
 {
 	pipex->infile = open(av[1], O_RDONLY);
-	if (pipex->infile == -1)
-		print_error(OPENIN, av[1]);
+	if (pipex->infile == -1 && access(av[1], F_OK))
+		print_error(NOFILEORDIRECTORY, av[1]);
+	else if (pipex->infile == -1 && !access(av[1], F_OK))
+		print_error(NOPERMISION, av[1]);
 	pipex->outfile = open(av[ac - 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (pipex->outfile == -1)
-		print_error(OPENOUT, av[ac - 1]);
+	if (pipex->outfile == -1 && access(av[ac - 1], F_OK))
+		print_error(NOFILEORDIRECTORY, av[ac - 1]);
+	else if (pipex->outfile == -1 && !access(av[ac - 1], F_OK))
+		print_error(NOPERMISION, av[ac - 1]);
 	if (pipex->infile == -1 && pipex->outfile == -1)
+		return (1);
+	return (0);
+}
+
+static int	ft_pipex(int ac, char **av, t_pipex *pipex)
+{
+	if (files_interface(ac, av, pipex))
 		return (1);
 	pipex->pid = (pid_t *)malloc(sizeof(pid_t) * pipex->ammount_cmd);
 	if (!pipex->pid)

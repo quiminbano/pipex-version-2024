@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 18:49:28 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/26 21:44:07 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/02 19:33:38 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 static void	handle_dup_and_close(t_pipex *pipex)
 {
-	if (pipex->fd[INPUT] != -1)
+	if (pipex->fd[OUTPUT] != -1)
 	{
 		dup2(pipex->fd[OUTPUT], STDOUT_FILENO);
 		close(pipex->fd[OUTPUT]);
 	}
-	if (pipex->fd[OUTPUT] != -1)
+	if (pipex->fd[INPUT] != -1)
 	{
 		dup2(pipex->fd[INPUT], STDIN_FILENO);
 		close(pipex->fd[INPUT]);
@@ -57,8 +57,10 @@ static int	execute_and_close(t_pipex *pipex)
 {
 	if (!pipex->pid[pipex->i])
 		run_child_process(pipex);
-	close(pipex->fd[OUTPUT]);
-	close(pipex->fd[INPUT]);
+	if (pipex->fd[OUTPUT] != -1)
+		close(pipex->fd[OUTPUT]);
+	if (pipex->fd[INPUT] != -1)
+		close(pipex->fd[INPUT]);
 	if (pipex->i < (pipex->ammount_cmd - 1))
 	{
 		pipex->fd[INPUT] = dup(pipex->pipes[INPUT]);
@@ -77,7 +79,7 @@ int	process_cmd(char *input, t_pipex *pipex)
 	pipex->cmd = ft_split(input, ' ');
 	if (!(pipex->cmd))
 		return (CMDALLOC);
-	pipex->path = find_path(input, pipex);
+	pipex->path = find_path(pipex->cmd[0], pipex);
 	if (!(pipex->path))
 		return (PATHALLOC);
 	if (pipex->i < (pipex->ammount_cmd - 1) && pipe(pipex->pipes) == -1)
