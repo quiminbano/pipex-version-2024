@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:37:53 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/02 15:05:46 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/04 13:16:35 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int	check_absolute(char *input, t_pipex *pipex)
 		pipex->error_flag = NOFILEORDIRECTORY;
 	else
 	{
-		check_absolute(input, pipex);
+		check_exec_permission(input, pipex);
 		if (pipex->error_flag == NOPERMISION)
 			return (0);
 		fd = open(input, O_DIRECTORY);
