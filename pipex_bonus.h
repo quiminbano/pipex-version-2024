@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:20:22 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/03 20:54:22 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/04 19:07:35 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "libft/libft.h"
 # include <fcntl.h>
 # include <string.h>
-# include <stdio.h>
 # include <sys/wait.h>
 
 # define MAX_FD 2
@@ -26,7 +25,7 @@
 typedef enum e_error
 {
 	NOERROR,
-	HEREDOCALLOC,
+	HEREDOCERROR,
 	PIDALLOC,
 	PATHALLOC,
 	CMDALLOC,
@@ -49,6 +48,7 @@ typedef struct s_pipex
 	int		pipes[MAX_FD];
 	int		infile;
 	int		outfile;
+	int		heredoc_flag;
 	t_error	error_return;
 	t_error	error_flag;
 	t_error	return_value;
@@ -64,5 +64,6 @@ void	wait_interface(t_pipex *pipex);
 size_t	find_in_env(char **envp, char *needle);
 char	*find_path(char *input, t_pipex *pipex);
 int		process_cmd(char *input, t_pipex *pipex);
+int		handle_heredoc(char *delimiter, char *outfile, t_pipex *pipex);
 
 #endif

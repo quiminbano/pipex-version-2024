@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 12:39:11 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/03 20:58:32 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/04 19:08:20 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,16 @@ void	print_error(int error, char *str)
 	ft_putstr_fd("pipex: ", 2);
 	if (error == EMPTYCOMMAND || error == DIRECTORY || error == NOPERMISION)
 		ft_putstr_fd(strerror(13), 2);
-	else if (error == PIDALLOC || error == PATHALLOC || error == CMDALLOC || \
-		error == HEREDOCALLOC)
+	else if (error == PIDALLOC || error == PATHALLOC || error == CMDALLOC)
 		ft_putstr_fd(strerror(12), 2);
+	else if (error == HEREDOCERROR)
+		ft_putstr_fd("error creating heredoc", 2);
 	else if (error == NOFILEORDIRECTORY)
 		ft_putstr_fd(strerror(2), 2);
+	else if (error == PIPEERROR)
+		ft_putstr_fd(strerror(32), 2);
+	else if (error == FORKERROR)
+		ft_putstr_fd(strerror(35), 2);
 	else if (error == NOPATH || error == NOTFOUND)
 		ft_putstr_fd("command not found", 2);
 	ft_putstr_fd(": ", 2);
@@ -46,8 +51,8 @@ void	print_error(int error, char *str)
 int	handle_system_error(t_pipex *pipex, int error)
 {
 	close_fd_interface_error(pipex, error);
-	if (error == HEREDOCALLOC)
-		print_error(HEREDOCALLOC, "heredoc_creation_error");
+	if (error == HEREDOCERROR)
+		print_error(HEREDOCERROR, "heredoc_creation_error");
 	else if (error == PIDALLOC)
 		print_error(PIDALLOC, "pid_alloc_error");
 	else if (error == PATHALLOC)

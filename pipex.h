@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:20:22 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/02 17:06:29 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/04 19:07:43 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "libft/libft.h"
 # include <fcntl.h>
 # include <string.h>
-# include <stdio.h>
 # include <sys/wait.h>
 
 # define MAX_FD 2

@@ -6,35 +6,16 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:19:12 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/03 21:37:22 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/04 17:33:44 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-static int	handle_heredoc(char *delimiter, t_pipex *pipex)
-{
-	char	*line;
-	char	*heredoc;
-	char	*temp;
-	size_t	i;
-
-	i = 0;
-	ft_putstr_fd("heredoc> ", 1);
-	heredoc = NULL;
-	line = get_next_line(0);
-	while (line)
-	{
-		if (!ft_strncmp(line, delimiter, SIZE_MAX))
-			break ;
-	}
-	return (0);
-}
-
 static int	files_interface(int ac, char **av, t_pipex *pipex)
 {
 	if (!ft_strncmp(av[1], "here_doc\0", 9))
-		return (handle_heredoc(av[2], pipex));
+		return (handle_heredoc(av[2], av[ac - 1], pipex));
 	pipex->infile = open(av[1], O_RDONLY);
 	if (pipex->infile == -1 && access(av[1], F_OK))
 		print_error(NOFILEORDIRECTORY, av[1]);
@@ -59,7 +40,10 @@ static int	ft_pipex(int ac, char **av, t_pipex *pipex)
 		return (handle_system_error(pipex, PIDALLOC));
 	while (pipex->i < pipex->ammount_cmd)
 	{
-		pipex->error_return = process_cmd(av[(pipex->i) + 2], pipex);
+		if (!pipex->heredoc_flag)
+			pipex->error_return = process_cmd(av[(pipex->i) + 2], pipex);
+		else
+			pipex->error_return = process_cmd(av[(pipex->i) + 3], pipex);
 		if (pipex->error_return)
 			return (handle_system_error(pipex, pipex->error_return));
 		if (pipex->error_flag)

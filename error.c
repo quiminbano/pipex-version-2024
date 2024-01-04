@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 12:39:11 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/02 15:18:23 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/04 14:37:12 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ void	print_error(int error, char *str)
 		ft_putstr_fd(strerror(12), 2);
 	else if (error == NOFILEORDIRECTORY)
 		ft_putstr_fd(strerror(2), 2);
+	else if (error == PIPEERROR)
+		ft_putstr_fd(strerror(32), 2);
+	else if (error == FORKERROR)
+		ft_putstr_fd(strerror(35), 2);
 	else if (error == NOPATH || error == NOTFOUND)
 		ft_putstr_fd("command not found", 2);
 	ft_putstr_fd(": ", 2);
