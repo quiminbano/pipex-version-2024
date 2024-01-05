@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 18:49:28 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/02 19:33:38 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:56:03 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,19 @@ static void	run_child_process(t_pipex *pipex)
 		else
 			print_error(pipex->error_flag, pipex->cmd[0]);
 		free_interface(pipex);
-		exit(EXIT_FAILURE);
+		if (pipex->error_flag == EMPTYCOMMAND || \
+			pipex->error_flag == DIRECTORY || \
+			pipex->error_flag == NOPERMISION)
+			exit(126);
+		exit(127);
 	}
 }
 
 static int	execute_and_close(t_pipex *pipex)
 {
+	pipex->pid[pipex->i] = fork();
+	if (pipex->pid[pipex->i] == -1)
+		return (FORKERROR);
 	if (!pipex->pid[pipex->i])
 		run_child_process(pipex);
 	if (pipex->fd[OUTPUT] != -1)
@@ -82,6 +89,13 @@ int	process_cmd(char *input, t_pipex *pipex)
 	pipex->path = find_path(pipex->cmd[0], pipex);
 	if (!(pipex->path))
 		return (PATHALLOC);
+	pipex->cmd_tmp = ft_strdup(input);
+	if (!pipex->cmd_tmp)
+		return (TMPCMDALLOC);
+	pipex->lst_tmp = ft_lstnew(pipex->cmd_tmp);
+	if (!pipex->lst_tmp)
+		return (LISTALLOC);
+	ft_lstadd_back(&pipex->lst_cmd, pipex->lst_tmp);
 	if (pipex->i < (pipex->ammount_cmd - 1) && pipe(pipex->pipes) == -1)
 		return (PIPEERROR);
 	if (pipex->i == 0)
@@ -90,8 +104,5 @@ int	process_cmd(char *input, t_pipex *pipex)
 		pipex->fd[OUTPUT] = pipex->outfile;
 	else
 		pipex->fd[OUTPUT] = pipex->pipes[OUTPUT];
-	pipex->pid[pipex->i] = fork();
-	if (pipex->pid[pipex->i] == -1)
-		return (FORKERROR);
 	return (execute_and_close(pipex));
 }

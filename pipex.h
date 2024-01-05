@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:20:22 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/04 19:07:43 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:01:34 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ typedef enum e_error
 	PIDALLOC,
 	PATHALLOC,
 	CMDALLOC,
+	TMPCMDALLOC,
+	LISTALLOC,
 	PIPEERROR,
 	FORKERROR,
 	EMPTYCOMMAND,
@@ -43,16 +45,20 @@ typedef struct s_pipex
 	char	*path;
 	char	**envp;
 	char	**cmd;
+	char	*cmd_tmp;
 	int		fd[MAX_FD];
 	int		pipes[MAX_FD];
 	int		infile;
 	int		outfile;
+	int		exit_program;
 	t_error	error_return;
 	t_error	error_flag;
 	t_error	return_value;
 	pid_t	*pid;
 	size_t	ammount_cmd;
 	size_t	i;
+	t_list	*lst_cmd;
+	t_list	*lst_tmp;
 }	t_pipex;
 
 void	print_error(int error, char *str);

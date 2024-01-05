@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 12:39:11 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/04 14:37:12 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:17:41 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	print_error(int error, char *str)
 	ft_putstr_fd("pipex: ", 2);
 	if (error == EMPTYCOMMAND || error == DIRECTORY || error == NOPERMISION)
 		ft_putstr_fd(strerror(13), 2);
-	else if (error == PIDALLOC || error == PATHALLOC || error == CMDALLOC)
+	else if (error == PIDALLOC || error == PATHALLOC || error == CMDALLOC || \
+		error == TMPCMDALLOC || error == LISTALLOC)
 		ft_putstr_fd(strerror(12), 2);
 	else if (error == NOFILEORDIRECTORY)
 		ft_putstr_fd(strerror(2), 2);
@@ -59,6 +60,14 @@ int	handle_system_error(t_pipex *pipex, int error)
 		print_error(PIPEERROR, "pipe_creation_error");
 	else if (error == FORKERROR)
 		print_error(FORKERROR, "fork_error");
+	else if (error == TMPCMDALLOC)
+		print_error(TMPCMDALLOC, "error allocating content for list");
+	else if (error == LISTALLOC)
+	{
+		print_error(LISTALLOC, "error allocating list node");
+		free(pipex->cmd_tmp);
+		pipex->cmd_tmp = NULL;
+	}
 	wait_interface(pipex);
 	free_interface(pipex);
 	return (1);

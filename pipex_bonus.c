@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:19:12 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/04 17:33:44 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:23:45 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ static int	files_interface(int ac, char **av, t_pipex *pipex)
 		print_error(NOFILEORDIRECTORY, av[ac - 1]);
 	else if (pipex->outfile == -1 && !access(av[ac - 1], F_OK))
 		print_error(NOPERMISION, av[ac - 1]);
-	if (pipex->infile == -1 && pipex->outfile == -1)
-		return (1);
 	return (0);
 }
 
