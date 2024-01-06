@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 20:58:51 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/05 16:05:49 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/06 15:50:23 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	get_signal(char *cmd, int exit_st)
 	else if (WTERMSIG(exit_st) == SIGQUIT)
 		ft_putstr_fd("pipex: quit  ", 2);
 	else if (WTERMSIG(exit_st) == SIGPIPE)
-		ft_putstr_fd("pipex: broken pipe  ", 2);
+		return (128 + WTERMSIG(exit_st));
 	else
 		ft_putstr_fd("pipex: unknown signal  ", 2);
 	ft_putendl_fd(cmd, 2);

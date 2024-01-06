@@ -6,14 +6,21 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:40:20 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/04 19:04:58 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/06 11:28:21 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-static void	reassign_heredoc(char **line, char **heredoc, char **temp)
+static int	append_heredoc(char **line, char **heredoc, char **temp)
 {
+	(*temp) = ft_strjoin((*heredoc), (*line));
+	if (!(*temp))
+	{
+		free(*heredoc);
+		free(*line);
+		return (1);
+	}
 	free(*heredoc);
 	(*heredoc) = NULL;
 	(*heredoc) = (*temp);
@@ -22,6 +29,7 @@ static void	reassign_heredoc(char **line, char **heredoc, char **temp)
 	(*line) = NULL;
 	ft_putstr_fd("pipex_heredoc> ", 1);
 	(*line) = get_next_line(0);
+	return (0);
 }
 
 static char	*get_string(char *delimiter, t_pipex *pipex)
@@ -40,15 +48,13 @@ static char	*get_string(char *delimiter, t_pipex *pipex)
 	while (line)
 	{
 		if (!ft_strncmp(delimiter, line, SIZE_MAX))
-			break ;
-		temp = ft_strjoin(heredoc, line);
-		if (!temp)
 		{
-			free(heredoc);
 			free(line);
-			return (NULL);
+			break ;
 		}
-		reassign_heredoc(&line, &heredoc, &temp);
+		pipex->error_flag = append_heredoc(&line, &heredoc, &temp);
+		if (pipex->error_flag)
+			return (NULL);
 	}
 	return (heredoc);
 }
@@ -101,7 +107,10 @@ int	handle_heredoc(char *delimiter, char *outfile, t_pipex *pipex)
 	pipex->heredoc_flag = 1;
 	pipex->ammount_cmd -= 1;
 	if (!new_delimiter)
+	{
+		print_error(HEREDOCERROR, "heredoc");
 		return (1);
+	}
 	pipex->infile = heredoc_fd(new_delimiter, pipex);
 	if (pipex->infile == -1)
 		print_error(HEREDOCERROR, "heredoc");
@@ -111,7 +120,5 @@ int	handle_heredoc(char *delimiter, char *outfile, t_pipex *pipex)
 	else if (pipex->outfile == -1 && !access(outfile, F_OK))
 		print_error(NOPERMISION, outfile);
 	free(new_delimiter);
-	if (pipex->infile == -1 && pipex->outfile == -1)
-		return (1);
 	return (0);
 }

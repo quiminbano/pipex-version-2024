@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:19:12 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/05 15:23:45 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/06 11:38:59 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,19 @@ static int	ft_pipex(int ac, char **av, t_pipex *pipex)
 		return (handle_system_error(pipex, PIDALLOC));
 	while (pipex->i < pipex->ammount_cmd)
 	{
+		pipex->cmd_tmp = NULL;
+		pipex->lst_tmp = NULL;
 		if (!pipex->heredoc_flag)
 			pipex->error_return = process_cmd(av[(pipex->i) + 2], pipex);
 		else
 			pipex->error_return = process_cmd(av[(pipex->i) + 3], pipex);
 		if (pipex->error_return)
 			return (handle_system_error(pipex, pipex->error_return));
-		if (pipex->error_flag)
-			pipex->error_return = 1;
 		(pipex->i)++;
 	}
 	wait_interface(pipex);
 	free_interface(pipex);
-	return (pipex->error_return);
+	return (pipex->exit_program);
 }
 
 int	main(int ac, char **av, char **envp)

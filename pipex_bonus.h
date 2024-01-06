@@ -6,12 +6,12 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:20:22 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/04 19:07:35 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/06 11:34:13 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 
 # include "libft/libft.h"
 # include <fcntl.h>
@@ -29,6 +29,8 @@ typedef enum e_error
 	PIDALLOC,
 	PATHALLOC,
 	CMDALLOC,
+	TMPCMDALLOC,
+	LISTALLOC,
 	PIPEERROR,
 	FORKERROR,
 	EMPTYCOMMAND,
@@ -44,17 +46,21 @@ typedef struct s_pipex
 	char	*path;
 	char	**envp;
 	char	**cmd;
+	char	*cmd_tmp;
 	int		fd[MAX_FD];
 	int		pipes[MAX_FD];
 	int		infile;
 	int		outfile;
 	int		heredoc_flag;
+	int		exit_program;
 	t_error	error_return;
 	t_error	error_flag;
 	t_error	return_value;
 	pid_t	*pid;
 	size_t	ammount_cmd;
 	size_t	i;
+	t_list	*lst_cmd;
+	t_list	*lst_tmp;
 }	t_pipex;
 
 void	print_error(int error, char *str);
