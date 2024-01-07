@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_split.c                                        :+:      :+:    :+:   */
+/*   get_brute.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 09:59:49 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/09 20:11:33 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/08 01:33:28 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static size_t	ft_strlen_pos(char const *org, int start)
 	while (*str != '\0')
 	{
 		flag = ft_flag_identifier(str, flag);
-		if (((flag == NORMAL) && (*str != 32 && *str != 0) && \
-			(*(str + 1) == 32 || !*(str + 1) || *(str + 1) == 39 || \
+		if (((flag == NORMAL) && (!ft_isspace(*str) && *str != 0) && \
+			(ft_isspace(*(str + 1)) || !*(str + 1) || *(str + 1) == 39 || \
 			*(str + 1) == 34)) || ((flag == ENDSINGLE) && (*str == 39)) || \
 			((flag == ENDDOUBLE) && (*str == 34)) || ((flag == SINGLE || \
 			flag == DOUBLE) && (!*(str + 1))))
@@ -41,15 +41,15 @@ static size_t	ft_strlen_pos(char const *org, int start)
 static size_t	ft_words(char const *str)
 {
 	size_t	i;
-	int		flag;
+	t_token	flag;
 
 	i = 0;
 	flag = NORMAL;
-	while (*str != '\0')
+	while (*str)
 	{
 		flag = ft_flag_identifier(str, flag);
-		if (((flag == NORMAL) && (*str != 32 && *str != 0) && \
-			(*(str + 1) == 32 || !*(str + 1) || *(str + 1) == 39 || \
+		if (((flag == NORMAL) && (!ft_isspace(*str) && *str != 0) && \
+			(ft_isspace(*(str + 1)) || !*(str + 1) || *(str + 1) == 39 || \
 			*(str + 1) == 34)) || ((flag == ENDSINGLE) && (*str == 39)) || \
 			((flag == ENDDOUBLE) && (*str == 34)) || ((flag == SINGLE || \
 			flag == DOUBLE) && (!*(str + 1))))
@@ -62,7 +62,7 @@ static size_t	ft_words(char const *str)
 	return (i);
 }
 
-char	**ft_get_split(char *str)
+char	**ft_get_brute(char *str)
 {
 	char	**split;
 	t_data	data;

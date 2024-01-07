@@ -6,14 +6,14 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:20:22 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/06 11:33:58 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/08 01:39:14 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "libft/libft.h"
+# include "parser.h"
 # include <fcntl.h>
 # include <string.h>
 # include <sys/wait.h>
