@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:20:22 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 01:39:25 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/08 01:42:37 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ size_t	find_in_env(char **envp, char *needle);
 char	*find_path(char *input, t_pipex *pipex);
 int		process_cmd(char *input, t_pipex *pipex);
 int		handle_heredoc(char *delimiter, char *outfile, t_pipex *pipex);
+char	**ft_parser(char *str);
 
 #endif
