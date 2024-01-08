@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 12:39:11 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 15:58:46 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:16:35 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	print_error(int error, char *str)
 {
 	if (error == DOTCASE)
 	{
-		ft_putendl_fd(".: not enough arguments", 2);
+		ft_putendl_fd(".: not allowed operation for security reasons", 2);
 		return ;
 	}
 	ft_putstr_fd("pipex: ", 2);
