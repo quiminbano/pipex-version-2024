@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:19:12 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/05 16:03:03 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:19:16 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ int	main(int ac, char **av, char **envp)
 	if (ac != 5)
 	{
 		if (ac < 5)
-			ft_putendl_fd("pipex: Not enough arguments.", 2);
+			ft_putendl_fd("pipex: not enough arguments.", 2);
 		else
-			ft_putendl_fd("pipex: Too many arguments.", 2);
+			ft_putendl_fd("pipex: too many arguments.", 2);
 		return (1);
 	}
 	pipex.ammount_cmd = (ac - 3);

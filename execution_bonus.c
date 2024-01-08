@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 18:49:28 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/06 15:09:40 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/08 10:32:42 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static int	execute_and_close(t_pipex *pipex)
 int	process_cmd(char *input, t_pipex *pipex)
 {
 	pipex->error_flag = NOERROR;
-	pipex->cmd = ft_split(input, ' ');
+	pipex->cmd = ft_parser(input);
 	if (!(pipex->cmd))
 		return (CMDALLOC);
 	pipex->path = find_path(pipex->cmd[0], pipex);

@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 20:02:32 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 00:03:58 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:40:35 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	get_flags(t_parser *parser, char const *str)
 	size_t	i;
 
 	i = 0;
+	parser->tok = NORMAL;
 	while (str[i])
 	{
 		parser->tok = ft_flag_identifier(str + i, parser->tok);
@@ -90,8 +91,7 @@ t_token	ft_flag_identifier(char const *str, t_token flag)
 		return (ENDDOUBLE);
 	else if ((flag == DOUBLE) && *str == 92)
 		return (SLASHDQUOTE);
-	else if ((flag == NORMAL) && (*str == 92) && (*(str + 1) == 34 || \
-		*(str + 1) == 39))
+	else if ((flag == NORMAL) && (*str == 92))
 		return (SLASH);
 	else if (flag == SLASH)
 		return (NORMAL);

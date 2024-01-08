@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 09:59:49 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 01:33:28 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:37:07 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ char	**ft_get_brute(char *str)
 
 	ft_bzero(&data, sizeof(data));
 	data.words = ft_words(str);
+	ft_putnbr_fd((int)data.words, 2);
+	ft_putendl_fd("", 2);
 	split = (char **)malloc(sizeof(char *) * (data.words + 1));
 	if (!split)
 		return (NULL);

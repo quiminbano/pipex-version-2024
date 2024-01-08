@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 14:25:36 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 01:32:46 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:54:40 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,11 @@ static char	**return_polished_array(t_parser *parser)
 static void	append_to_last(char **result, t_parser *parser)
 {
 	char	*content;
+	t_list	*last;
 
 	content = NULL;
-	content = (char *)ft_lstlast(parser->cmd_lst)->content;
+	last = ft_lstlast(parser->cmd_lst);
+	content = (char *)last->content;
 	parser->temp_str = ft_strjoin(content, (*result));
 	if (!parser->temp_str)
 	{
@@ -55,10 +57,9 @@ static void	append_to_last(char **result, t_parser *parser)
 		(*result) = NULL;
 		return ;
 	}
-	ft_lstdelone(ft_lstlast(parser->cmd_lst), &free);
-	free(*result);
-	(*result) = NULL;
-	(*result) = parser->temp_str;
+	free(last->content);
+	last->content = NULL;
+	last->content = (void *)parser->temp_str;
 	parser->temp_str = NULL;
 }
 
@@ -78,7 +79,7 @@ static void	polish_cmd_add_lst(t_parser *parser, char *str)
 	clean_extra_char(&result, str, parser);
 	if (parser->idx && !parser->spaces)
 		append_to_last(&result, parser);
-	if (!parser->error_flag)
+	else
 	{
 		parser->tmp = ft_lstnew(result);
 		if (!parser->tmp)
@@ -94,13 +95,19 @@ static void	polish_cmd_add_lst(t_parser *parser, char *str)
 static char	**process_brute(t_parser *parser)
 {
 	size_t	i;
+	size_t	idx_af_sp;
 
 	i = 0;
+	idx_af_sp = 0;
 	while (parser->brute_cmd[parser->idx])
 	{
 		parser->tmp = NULL;
-		parser->spaces = ft_index_after_char(parser->original_cmd, i);
-		i = parser->spaces;
+		idx_af_sp = ft_index_after_char(parser->original_cmd, i);
+		if (idx_af_sp > i)
+			parser->spaces = idx_af_sp;
+		else
+			parser->spaces = 0;
+		i = idx_af_sp;
 		ft_bzero(&parser->flags, (sizeof(t_token) * 2));
 		get_flags(parser, parser->brute_cmd[parser->idx]);
 		parser->len = ft_strlen(parser->brute_cmd[parser->idx]);
@@ -120,6 +127,9 @@ char	**ft_parser(char *str)
 
 	ft_bzero(&parser, sizeof(parser));
 	parser.brute_cmd = ft_get_brute(str);
+	size_t	i = 0;
+	while (parser.brute_cmd[i])
+		ft_putendl_fd(parser.brute_cmd[i++], 2);
 	if (!parser.brute_cmd)
 		return (NULL);
 	parser.original_cmd = str;
