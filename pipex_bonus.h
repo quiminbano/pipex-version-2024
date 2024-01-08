@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:20:22 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 01:42:37 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:52:53 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ typedef enum e_error
 	NOTFOUND,
 	DIRECTORY,
 	NOPERMISION,
-	NOFILEORDIRECTORY
+	NOFILEORDIRECTORY,
+	DOTCASE
 }	t_error;
 
 typedef struct s_pipex

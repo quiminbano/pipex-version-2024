@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 18:49:28 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 10:32:42 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:02:15 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,29 @@ static void	run_child_process(t_pipex *pipex)
 	if (pipex->error_flag != NOERROR || \
 		execve(pipex->path, pipex->cmd, pipex->envp) == -1)
 	{
-		if (!pipex->cmd[0])
-			print_error(pipex->error_flag, "");
-		else
-			print_error(pipex->error_flag, pipex->cmd[0]);
 		free_interface(pipex);
 		if (pipex->error_flag == EMPTYCOMMAND || \
 			pipex->error_flag == DIRECTORY || \
 			pipex->error_flag == NOPERMISION)
 			exit(126);
+		else if (pipex->error_flag == DOTCASE)
+			exit(EXIT_FAILURE);
 		exit(127);
 	}
 }
 
+static void	check_error(t_pipex *pipex)
+{
+	if (!pipex->cmd[0])
+		print_error(pipex->error_flag, "");
+	else
+		print_error(pipex->error_flag, pipex->cmd[0]);
+}
+
 static int	execute_and_close(t_pipex *pipex)
 {
+	if (pipex->error_flag != NOERROR)
+		check_error(pipex);
 	pipex->pid[pipex->i] = fork();
 	if (pipex->pid[pipex->i] == -1)
 		return (FORKERROR);

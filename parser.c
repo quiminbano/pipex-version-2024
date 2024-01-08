@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 14:25:36 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 12:54:40 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/08 14:45:57 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,9 +127,6 @@ char	**ft_parser(char *str)
 
 	ft_bzero(&parser, sizeof(parser));
 	parser.brute_cmd = ft_get_brute(str);
-	size_t	i = 0;
-	while (parser.brute_cmd[i])
-		ft_putendl_fd(parser.brute_cmd[i++], 2);
 	if (!parser.brute_cmd)
 		return (NULL);
 	parser.original_cmd = str;

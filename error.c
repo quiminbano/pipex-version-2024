@@ -6,11 +6,23 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 12:39:11 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/05 15:17:41 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:58:46 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+static void	ft_printlower_fd(char *str, int fd)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		ft_putchar_fd(ft_tolower(str[i]), fd);
+		i++;
+	}
+}
 
 static void	close_fd_interface_error(t_pipex *pipex, int error)
 {
@@ -29,18 +41,23 @@ static void	close_fd_interface_error(t_pipex *pipex, int error)
 
 void	print_error(int error, char *str)
 {
+	if (error == DOTCASE)
+	{
+		ft_putendl_fd(".: not enough arguments", 2);
+		return ;
+	}
 	ft_putstr_fd("pipex: ", 2);
 	if (error == EMPTYCOMMAND || error == DIRECTORY || error == NOPERMISION)
-		ft_putstr_fd(strerror(13), 2);
+		ft_printlower_fd(strerror(13), 2);
 	else if (error == PIDALLOC || error == PATHALLOC || error == CMDALLOC || \
 		error == TMPCMDALLOC || error == LISTALLOC)
-		ft_putstr_fd(strerror(12), 2);
+		ft_printlower_fd(strerror(12), 2);
 	else if (error == NOFILEORDIRECTORY)
-		ft_putstr_fd(strerror(2), 2);
+		ft_printlower_fd(strerror(2), 2);
 	else if (error == PIPEERROR)
-		ft_putstr_fd(strerror(32), 2);
+		ft_printlower_fd(strerror(32), 2);
 	else if (error == FORKERROR)
-		ft_putstr_fd(strerror(35), 2);
+		ft_printlower_fd(strerror(35), 2);
 	else if (error == NOPATH || error == NOTFOUND)
 		ft_putstr_fd("command not found", 2);
 	ft_putstr_fd(": ", 2);

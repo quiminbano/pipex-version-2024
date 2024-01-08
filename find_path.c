@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:37:53 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/07 18:03:11 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:50:59 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ static int	check_absolute(char *input, t_pipex *pipex)
 	int	fd;
 
 	fd = 0;
-	if (!ft_strchr(input, '/'))
+	if (!ft_strchr(input, '/') && ft_strncmp(input, ".\0", 2) && \
+		ft_strncmp(input, "..\0", 3))
 		return (-1);
 	if (access(input, F_OK))
 		pipex->error_flag = NOFILEORDIRECTORY;
@@ -97,6 +98,8 @@ static int	check_absolute(char *input, t_pipex *pipex)
 			close(fd);
 			pipex->error_flag = DIRECTORY;
 		}
+		if (!ft_strncmp(input, ".\0", 2))
+			pipex->error_flag = DOTCASE;
 	}
 	return (0);
 }
