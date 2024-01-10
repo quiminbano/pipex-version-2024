@@ -1,16 +1,17 @@
 #!/bin/zsh
 
-pipexInstructions=("./pipex \"\" \"\" \"\" \"\"" \
-					"./pipex \"\" \"cat\" \"cat\" \"\"" \
-					"./pipex \"infile\" \"cat\" \"cat\" \"\"" \
-					"./pipex \"\" \"cat\" \"cat\" \"\"outfile" \
-					"./pipex \"infile\" \"\" \"\" \"outfile\"" \
-					"./pipex \"infile\" \"cat\" \"cat\" \"outfile\"" \
-					"./pipex \"infile\" \"./testsegv\" \"./testsegv\" \"outfile\"" \
-					"./pipex \"infile\" \"./testbus\" \"./testbus\" \"outfile\"" \
-					"./pipex \"infile\" \"./myfolder\" \"cat\" \"outfile\"" \
-					"./pipex \"infile\" \"cat\" \"./myfolder\" \"outfile\"" \
-					"./pipex \"infile\" \"/bin/hello\" \"/bin/hello\" \"outfile\"")
+pipexInstructions=("./pipex '' '' '' ''" \
+					"./pipex '' 'cat' 'cat' ''" \
+					"./pipex 'infile' 'cat' 'cat' ''" \
+					"./pipex '' 'cat' 'cat' 'outfile'" \
+					"./pipex 'infile' '' '' 'outfile'" \
+					"./pipex 'infile' 'cat' 'cat' 'outfile'" \
+					"./pipex 'infile' './testsegv' './testsegv' 'outfile'" \
+					"./pipex 'infile' './myfolder' 'cat' 'outfile'" \
+					"./pipex 'infile' 'cat' './myfolder' 'outfile'" \
+					"./pipex 'infile' '/bin/hello' '/bin/hello' 'outfile'" \
+					"./pipex 'testsegv.c' 'cat' 'grep str\ =\ NULL' 'outfile'" \
+					"./pipex 'infile2' 'cat' 'awk -F \";\" \"{print \$1}\"' 'outfile'")
 
 zshInstructions=("< '' '' | '' > ''" \
 				"< '' cat | cat > ''" \
@@ -19,10 +20,11 @@ zshInstructions=("< '' '' | '' > ''" \
 				"< infile '' | '' > outfile" \
 				"< infile cat | cat > outfile" \
 				"< infile ./testsegv | ./testsegv > outfile" \
-				"< infile ./testbus | ./testbus > outfile" \
 				"< infile ./myfolder | cat > outfile" \
 				"< infile cat | ./myfolder > outfile" \
-				"< infile /bin/hello | /bin/hello > outfile")
+				"< infile /bin/hello | /bin/hello > outfile" \
+				"< testsegv.c cat | grep str\ =\ NULL > outfile" \
+				"< infile2 cat | awk -F \";\" '{print \$1}' > outfile")
 
 echo "COMPILING THE PROGRAM"
 make
@@ -33,6 +35,7 @@ if [ ! -d "testValgrind" ]; then
 	mkdir testValgrind;
 fi
 echo "THIS IS AN INFILE" > infile
+echo -e "hello;world\nhola;mundo" > infile2
 << EOF cat > testsegv.c
 #include <string.h>
 #include <stdio.h>
@@ -48,32 +51,9 @@ int	main(void)
 	return (0);
 }
 EOF
-<< EOF cat > testbus.c
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
 
-char	*return_string(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while(str[i])
-	{
-		str[i] = tolower(str[i]);
-		i++;
-	}
-	return (str);
-}
-
-int	main(void)
-{
-	printf("This is string: %s\n", return_string(strerror(2)));
-	return (0);
-}
-EOF
 cc -Wall -Wextra -Werror testsegv.c -o testsegv
-cc -Wall -Wextra -Werror testbus.c -o testbus
+
 returnPipex=0
 returnZsh=0
 index=1
