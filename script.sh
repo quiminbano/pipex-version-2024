@@ -90,8 +90,3 @@ while [ $index -le $sizeArray ]; do
 	mv test${index}.txt testValgrind/
 	((index++));
 done
-
-while true
-do
-	sleep 1;
-done
