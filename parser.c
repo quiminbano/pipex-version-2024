@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 14:25:36 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 14:45:57 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/12 13:35:21 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static void	append_to_last(char **result, t_parser *parser)
 	last->content = NULL;
 	last->content = (void *)parser->temp_str;
 	parser->temp_str = NULL;
+	free((*result));
+	(*result) = NULL;
 }
 
 static void	polish_cmd_add_lst(t_parser *parser, char *str)

@@ -4,4 +4,4 @@ services:
   pipex:
     build: ./
     volumes:
-    - ./valgrindTest:/pipex/testValgrind
+    - ./testValgrind:/pipex/testValgrind

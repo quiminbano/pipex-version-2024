@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 19:24:00 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 01:32:11 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/12 13:35:06 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ typedef struct s_data
 	size_t	words;
 	size_t	length;
 	size_t	spaces;
+	t_token	flag;
+	t_token	prev_flag;
 }	t_data;
 
 typedef struct s_parser
