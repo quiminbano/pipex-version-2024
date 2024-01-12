@@ -136,11 +136,3 @@ LD_PRELOAD=/pipex/libmockpipe.so valgrind --leak-check=full --show-reachable=yes
 mv test17.txt testValgrind/
 cat outfile
 sleep 3
-echo "TEST NUMBER 18 : Testing something else";
-cc -Wall -Wextra -Werror madonna.c -o madonnatest
-echo ""
-echo "Testing leaks with valgrind: This will be stored in the in test18.txt";
-valgrind --leak-check=full --show-reachable=yes --track-origins=yes --verbose --tool=memcheck --trace-children=yes ./madonnatest 2> test18.txt
-mv test18.txt testValgrind/
-cat outfile
-sleep 3
