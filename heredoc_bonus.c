@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:40:20 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/06 11:28:21 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/14 11:31:09 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*get_string(char *delimiter, t_pipex *pipex)
 	line = get_next_line(0);
 	while (line)
 	{
-		if (!ft_strncmp(delimiter, line, SIZE_MAX))
+		if (!ft_strcmp(delimiter, line))
 		{
 			free(line);
 			break ;

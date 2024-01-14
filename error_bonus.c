@@ -6,23 +6,11 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 12:39:11 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 16:17:17 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/14 12:43:06 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
-
-static void	ft_printlower_fd(char *str, int fd)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-	{
-		ft_putchar_fd(ft_tolower(str[i]), fd);
-		i++;
-	}
-}
 
 static void	close_fd_interface_error(t_pipex *pipex, int error)
 {
@@ -47,23 +35,25 @@ void	print_error(int error, char *str)
 		return ;
 	}
 	ft_putstr_fd("pipex: ", 2);
-	if (error == EMPTYCOMMAND || error == DIRECTORY || error == NOPERMISION)
-		ft_printlower_fd(strerror(13), 2);
-	else if (error == PIDALLOC || error == PATHALLOC || error == CMDALLOC || \
+	if (error == PIPEERROR || error == FORKERROR || error == NOERROR || \
+		error == PIDALLOC || error == PATHALLOC || error == CMDALLOC || \
 		error == TMPCMDALLOC || error == LISTALLOC)
-		ft_printlower_fd(strerror(12), 2);
-	else if (error == HEREDOCERROR)
-		ft_printlower_fd("error creating heredoc", 2);
-	else if (error == NOFILEORDIRECTORY)
-		ft_printlower_fd(strerror(2), 2);
-	else if (error == PIPEERROR)
-		ft_printlower_fd(strerror(32), 2);
-	else if (error == FORKERROR)
-		ft_printlower_fd(strerror(35), 2);
-	else if (error == NOPATH || error == NOTFOUND)
-		ft_putstr_fd("command not found", 2);
+	{
+		perror(str);
+		return ;
+	}
 	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(str, 2);
+	if (error == NOPERMISION)
+		ft_putendl_fd(strerror(13), 2);
+	else if (error == NOFILEORDIRECTORY || error == NOPATH)
+		ft_putendl_fd(strerror(2), 2);
+	else if (error == NOTFOUND || error == EMPTYCOMMAND)
+		ft_putendl_fd("command not found", 2);
+	else if (error == DIRECTORY)
+		ft_putendl_fd(strerror(21), 2);
+	else if (error == HEREDOCERROR)
+		ft_putendl_fd("error creating heredoc", 2);
 }
 
 int	handle_system_error(t_pipex *pipex, int error)

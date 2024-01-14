@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 08:50:51 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/04 22:49:23 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/14 11:28:29 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 void	ft_free_split(char **split);
 size_t	ft_split_length(char **arr);
 void	ft_free_int_ar(int	**array, int ammount);
+int		ft_strcmp(char const *str1, char const *str2);
 
 #endif
