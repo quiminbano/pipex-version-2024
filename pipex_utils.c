@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 20:58:51 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/06 15:50:23 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/14 14:00:33 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,26 @@
 
 static int	get_signal(char *cmd, int exit_st)
 {
-	if (WTERMSIG(exit_st) == SIGSEGV)
-		ft_putstr_fd("pipex: segmentation fault  ", 2);
-	else if (WTERMSIG(exit_st) == SIGBUS)
-		ft_putstr_fd("pipex: bus error  ", 2);
-	else if (WTERMSIG(exit_st) == SIGKILL)
-		ft_putstr_fd("pipex: killed  ", 2);
-	else if (WTERMSIG(exit_st) == SIGABRT)
-		ft_putstr_fd("pipex: abort  ", 2);
-	else if (WTERMSIG(exit_st) == SIGQUIT)
-		ft_putstr_fd("pipex: quit  ", 2);
-	else if (WTERMSIG(exit_st) == SIGPIPE)
+	if (WTERMSIG(exit_st) == SIGPIPE)
 		return (128 + WTERMSIG(exit_st));
+	ft_putstr_fd("pipex: ", 2);
+	if (cmd)
+		ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": ", 2);
+	if (WTERMSIG(exit_st) == SIGSEGV)
+		ft_putstr_fd("Segmentation fault: ", 2);
+	else if (WTERMSIG(exit_st) == SIGBUS)
+		ft_putstr_fd("Bus error: ", 2);
+	else if (WTERMSIG(exit_st) == SIGKILL)
+		ft_putstr_fd("Killed: ", 2);
+	else if (WTERMSIG(exit_st) == SIGABRT)
+		ft_putstr_fd("Abort: ", 2);
+	else if (WTERMSIG(exit_st) == SIGQUIT)
+		ft_putstr_fd("Quit: ", 2);
 	else
-		ft_putstr_fd("pipex: unknown signal  ", 2);
-	ft_putendl_fd(cmd, 2);
+		ft_putstr_fd("Unknown signal: ", 2);
+	ft_putnbr_fd(WTERMSIG(exit_st), 2);
+	ft_putendl_fd("", 2);
 	return (128 + WTERMSIG(exit_st));
 }
 

@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 08:50:51 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/14 11:28:29 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/14 13:44:54 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 
-}t_list;
+}	t_list;
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);

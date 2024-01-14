@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:20:22 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 15:52:53 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/14 13:52:54 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "parser.h"
 # include <fcntl.h>
 # include <string.h>
+# include <stdio.h>
 # include <sys/wait.h>
 
 # define MAX_FD 2
