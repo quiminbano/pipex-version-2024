@@ -6,19 +6,19 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 20:58:51 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/14 14:00:33 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/15 23:43:32 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	get_signal(char *cmd, int exit_st)
+static int	get_signal(void *cmd, int exit_st, t_pipex *pipex, size_t j)
 {
-	if (WTERMSIG(exit_st) == SIGPIPE)
+	if (j < (pipex->ammount_cmd - 1))
 		return (128 + WTERMSIG(exit_st));
 	ft_putstr_fd("pipex: ", 2);
 	if (cmd)
-		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd((char *)cmd, 2);
 	ft_putstr_fd(": ", 2);
 	if (WTERMSIG(exit_st) == SIGSEGV)
 		ft_putstr_fd("Segmentation fault: ", 2);
@@ -30,6 +30,8 @@ static int	get_signal(char *cmd, int exit_st)
 		ft_putstr_fd("Abort: ", 2);
 	else if (WTERMSIG(exit_st) == SIGQUIT)
 		ft_putstr_fd("Quit: ", 2);
+	else if (WTERMSIG(exit_st) == SIGPIPE)
+		ft_putstr_fd("Broken pipe: ", 2);
 	else
 		ft_putstr_fd("Unknown signal: ", 2);
 	ft_putnbr_fd(WTERMSIG(exit_st), 2);
@@ -49,7 +51,7 @@ void	wait_interface(t_pipex *pipex)
 	{
 		waitpid(pipex->pid[j], &exit_st, 0);
 		if (WIFSIGNALED(exit_st) != 0)
-			pipex->exit_program = get_signal((char *)iter->content, exit_st);
+			pipex->exit_program = get_signal(iter->content, exit_st, pipex, j);
 		else
 			pipex->exit_program = WEXITSTATUS(exit_st);
 		j++;
