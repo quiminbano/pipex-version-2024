@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 12:39:11 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/14 13:30:31 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/17 20:04:07 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	print_error(int error, char *str)
 	}
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": ", 2);
-	if (error == NOPERMISION)
+	if (error == NOPERMISION || error == NOPERMISIONPATH)
 		ft_putendl_fd(strerror(13), 2);
 	else if (error == NOFILEORDIRECTORY || error == NOPATH)
 		ft_putendl_fd(strerror(2), 2);

@@ -6,18 +6,31 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:37:53 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 15:50:59 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/17 20:17:21 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	check_exec_permission(char *path, t_pipex *pipex)
+static t_error	check_exec_permission(char *path, int cases)
 {
-	if (access(path, X_OK))
-		pipex->error_flag = NOPERMISION;
+	int	fd;
+
+	fd = 0;
+	if (access(path, X_OK) && cases == 0)
+		return (NOPERMISIONPATH);
+	else if (access(path, X_OK) && cases == 1)
+		return (NOPERMISION);
 	else
-		pipex->error_flag = NOERROR;
+	{
+		fd = open(path, O_DIRECTORY);
+		if (fd != -1)
+		{
+			close(fd);
+			return (DIRECTORY);
+		}
+	}
+	return (NOERROR);
 }
 
 static char	**make_possibles(size_t index, t_pipex *pipex)
@@ -60,11 +73,11 @@ static char	*match_path(t_pipex *pipex, char ***possibles)
 		path = ft_strjoin((*possibles)[i], pipex->cmd[0]);
 		if (!path)
 			return (NULL);
-		if (!access(path, F_OK))
+		if (!access(path, F_OK) && check_exec_permission(path, 0) != DIRECTORY)
 		{
 			ft_free_split(*possibles);
 			(*possibles) = NULL;
-			check_exec_permission(path, pipex);
+			pipex->error_flag = check_exec_permission(path, 0);
 			return (path);
 		}
 		free(path);
@@ -79,9 +92,6 @@ static char	*match_path(t_pipex *pipex, char ***possibles)
 
 static int	check_absolute(char *input, t_pipex *pipex)
 {
-	int	fd;
-
-	fd = 0;
 	if (!ft_strchr(input, '/') && ft_strncmp(input, ".\0", 2) && \
 		ft_strncmp(input, "..\0", 3))
 		return (-1);
@@ -89,15 +99,9 @@ static int	check_absolute(char *input, t_pipex *pipex)
 		pipex->error_flag = NOFILEORDIRECTORY;
 	else
 	{
-		check_exec_permission(input, pipex);
+		pipex->error_flag = check_exec_permission(input, 1);
 		if (pipex->error_flag == NOPERMISION)
 			return (0);
-		fd = open(input, O_DIRECTORY);
-		if (fd != -1)
-		{
-			close(fd);
-			pipex->error_flag = DIRECTORY;
-		}
 		if (!ft_strncmp(input, ".\0", 2))
 			pipex->error_flag = DOTCASE;
 	}

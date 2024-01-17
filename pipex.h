@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 10:20:22 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/14 11:57:02 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/17 19:57:34 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef enum e_error
 	NOTFOUND,
 	DIRECTORY,
 	NOPERMISION,
+	NOPERMISIONPATH,
 	NOFILEORDIRECTORY,
 	DOTCASE
 }	t_error;
