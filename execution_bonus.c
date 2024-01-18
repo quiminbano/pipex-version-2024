@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 18:49:28 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/17 20:12:42 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/19 01:07:24 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static void	run_child_process(t_pipex *pipex)
 			print_error(NOERROR, pipex->cmd[0]);
 		free_interface(pipex);
 		if (pipex->error_flag == DIRECTORY || \
-			pipex->error_flag == NOPERMISION)
+			pipex->error_flag == NOPERMISION || \
+			pipex->error_flag == NOPERMISIONPATH)
 			exit(126);
 		else if (pipex->error_flag == DOTCASE)
 			exit(EXIT_FAILURE);
