@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:37:53 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/17 20:09:59 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/21 19:38:10 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,6 @@ static char	*match_path(t_pipex *pipex, char ***possibles)
 
 static int	check_absolute(char *input, t_pipex *pipex)
 {
-	int	fd;
-
-	fd = 0;
 	if (!ft_strchr(input, '/') && ft_strncmp(input, ".\0", 2) && \
 		ft_strncmp(input, "..\0", 3))
 		return (-1);
