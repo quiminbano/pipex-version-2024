@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 15:00:18 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/28 23:28:22 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:26:09 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct s_gnl
 	size_t	n_position;
 	size_t	length;
 	size_t	size_alloc;
-	size_t	diff;
 	char	*line;
 	char	*buf;
 	char	*temp;

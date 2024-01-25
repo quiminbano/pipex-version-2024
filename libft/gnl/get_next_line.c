@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 15:01:33 by corellan          #+#    #+#             */
-/*   Updated: 2023/12/28 21:42:53 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:27:17 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static void	ft_line_check(char **stack, t_gnl *col)
 		col->n_position = 0;
 		col->size_alloc = col->length;
 	}
-	col->diff = (col->length - col->size_alloc);
 }
 
 static char	*ft_write_line(char **stack, t_gnl *col)
@@ -49,7 +48,7 @@ static char	*ft_write_line(char **stack, t_gnl *col)
 		return (NULL);
 	}
 	ft_strlcpy(col->line, *stack, (col->size_alloc + 1));
-	col->temp = (char *)malloc(sizeof(char) * (col->diff) + 1);
+	col->temp = ft_strjoin((*stack) + (col->size_alloc), "");
 	if (!col->temp)
 	{
 		free(col->line);
@@ -57,9 +56,10 @@ static char	*ft_write_line(char **stack, t_gnl *col)
 		*stack = NULL;
 		return (NULL);
 	}
-	ft_strlcpy(col->temp, (*stack) + (col->size_alloc), (col->length + 1));
-	ft_strlcpy((*stack), col->temp, (col->length + 1));
-	free(col->temp);
+	free(*stack);
+	(*stack) = NULL;
+	(*stack) = col->temp;
+	col->temp = NULL;
 	return (col->line);
 }
 
