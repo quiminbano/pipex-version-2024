@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 15:01:33 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/25 11:27:17 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/26 12:07:50 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ static char	*ft_write_line(char **stack, t_gnl *col)
 		return (NULL);
 	}
 	free(*stack);
-	(*stack) = NULL;
+	if (col->temp[0] == '\0')
+	{
+		free(col->temp);
+		col->temp = NULL;
+	}
 	(*stack) = col->temp;
 	col->temp = NULL;
 	return (col->line);
