@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 20:02:32 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 12:40:35 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/27 09:25:42 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	clean_extra_char(char **result, char const *src, t_parser *parser)
 	while (*src)
 	{
 		if ((system == DOUBLE && *src != 34) || (system == SINGLE && \
-			*src != 39) || (system == NORMAL && *src != 92))
+			*src != 39) || (system == NORMAL && !check_slash(src)))
 		{
 			if (system == DOUBLE && *src == 92 && *(src + 1) == 34)
 				*temp = *(src + 1);
@@ -72,7 +72,7 @@ size_t	get_size_alloc(t_parser *parser, char *str)
 	while (str[i])
 	{
 		if ((system == DOUBLE && str[i] == 34) || (system == SINGLE && \
-			str[i] == 39) || (system == NORMAL && str[i] == 92))
+			str[i] == 39) || (system == NORMAL && check_slash(str + i)))
 			parser->len -= 1;
 		i++;
 	}

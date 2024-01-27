@@ -1,16 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_free.c                                      :+:      :+:    :+:   */
+/*   parser_utils_extra.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 01:19:49 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/08 01:27:00 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/27 09:23:37 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+int		check_slash(char const *str)
+{
+	static int	flag = 0;
+	int			return_value;
+
+	return_value = 0;
+	if (flag == 0 && *str == 92)
+	{
+		return_value = 1;
+		flag = 1;
+	}
+	else if ((flag == 1 && *str == 92) || *str != 92)
+	{
+		return_value = 0;
+		flag = 0;
+	}
+	if (*(str + 1) != 92)
+		flag = 0;
+	return (return_value);
+}
 
 void	parser_free_interface(t_parser *parser)
 {

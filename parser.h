@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 19:24:00 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/12 13:35:06 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/27 09:24:00 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ size_t	get_size_alloc(t_parser *parser, char *str);
 void	clean_extra_char(char **result, char const *src, t_parser *parser);
 char	**parser_free_error(t_parser *parser);
 void	parser_free_interface(t_parser *parser);
+int		check_slash(char const *str);
 
 #endif

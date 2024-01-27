@@ -6,7 +6,7 @@
 #    By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/22 14:06:32 by corellan          #+#    #+#              #
-#    Updated: 2024/01/20 00:23:21 by corellan         ###   ########.fr        #
+#    Updated: 2024/01/27 09:23:17 by corellan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRC = pipex.c pipex_utils.c find_path.c error.c execution.c
 SRC_BONUS = pipex_bonus.c pipex_utils_bonus.c find_path_bonus.c error_bonus.c \
 execution_bonus.c heredoc_bonus.c
 
-PAR = parser.c get_brute.c parser_utils.c parser_free.c
+PAR = parser.c get_brute.c parser_utils.c parser_utils_extra.c
 
 OBJ = $(SRC:.c=.o)
 
