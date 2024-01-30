@@ -6,13 +6,13 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 01:19:49 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/27 09:23:37 by corellan         ###   ########.fr       */
+/*   Updated: 2024/01/30 22:37:41 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-int		check_slash(char const *str)
+int	check_slash(char const *str)
 {
 	static int	flag = 0;
 	int			return_value;
