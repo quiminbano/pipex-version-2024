@@ -10,7 +10,15 @@ This project tries to simulate the following entrance in a shell:
 < infile cmd1 | cmd2 > outfile
 ```
 
-Where `infile` is an input file, `cmd1` and `cmd2` are the commands you want to run in sequence, and `outfile` is an output file to create.
+Where `infile` is an input file, `cmd1` and `cmd2` are the commands you want to run in sequence, and `outfile` is an output file to create. The behaviour of this command is going to depend of your shell of reference.
+
+In pipex, to get the same result than the command above, you must run your pipex as follows:
+
+```bash
+./pipex infile cmd1 cmd2 outfile
+```
+
+Where `infile`, `cmd1`, `cmd2` and `outfile` have the same purpuse than the command mentioned above.
 
 ## Installation
 
@@ -33,13 +41,20 @@ cd pipex
 make
 ```
 
-## Usage
+4. Run the command, replacing `infile`, `cmd1` and `cmd2` for valid files or commands:
 
-Once you have compiled the project, you can use the `pipex` program from the command line. Here is an example of how to use it:
-
+For example:
 ```bash
-./pipex infile cmd1 cmd2 outfile
+./pipex pipex.c "ls" "wc -l" outfile
 ```
+
+## Bonus
+
+The bonus of this project add some extra features to the program pipex. These functionalities are:
+
+1. Run more than two commands in one call:
+
+For example: ```bash ./pipex infile cmd1 cmd2 cmd3 .... cmdn outfile``` represent the command ```bash < infile cmd1 | cmd2 | cmd3 | ..... | cmdn > outfile```
 
 ## Tests
 
