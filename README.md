@@ -58,9 +58,20 @@ For example:
 ```bash
 ./pipex infile cmd1 cmd2 cmd3 .... cmdn outfile
 ``` 
-represent the command 
+represents the command
 ```bash
 < infile cmd1 | cmd2 | cmd3 | ..... | cmdn > outfile
+```
+
+2. Open a heredoc when the keyword `here_doc` is used as a first parameter. Append the output to `outfile` if `outfile` exists previously.
+
+For example:
+```bash
+./pipex here_doc EOF "cat" "wc -l" outfile
+```
+represents the command:
+```bash
+<< EOF cat | wc -l > outfile
 ```
 
 ## Tests
