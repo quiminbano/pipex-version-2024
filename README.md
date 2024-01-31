@@ -8,7 +8,7 @@ To install this project, follow these steps:
 
 1. Clone the repository onto your local machine using the following command:
 ```bash
-git clone https://github.com/yourusername/pipex.git
+git clone https://github.com/quiminbano/pipex-version-2024.git
 ```
 
 3. Navigate to the project directory:
