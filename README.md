@@ -2,6 +2,16 @@
 
 The Pipex project is a custom implementation of the Unix `pipe` command. This project is carried out as part of the training at the 42 Network Schools. It focuses on teaching basic Unix operations, particularly about pipelines, child processes, and command execution.
 
+## What is the project trying to simulate?
+
+This project tries to simulate the following entrance in a shell:
+
+```bash
+< infile cmd1 | cmd2 > outfile
+```
+
+Where `infile` is an input file, `cmd1` and `cmd2` are the commands you want to run in sequence, and `outfile` is an output file to create.
+
 ## Installation
 
 To install this project, follow these steps:
@@ -30,8 +40,6 @@ Once you have compiled the project, you can use the `pipex` program from the com
 ```bash
 ./pipex infile cmd1 cmd2 outfile
 ```
-
-In this command, `infile` is the input file, `cmd1` and `cmd2` are the commands you want to run in sequence, and `outfile` is the output file.
 
 ## Tests
 
