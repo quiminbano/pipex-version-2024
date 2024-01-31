@@ -20,7 +20,7 @@ In pipex, to get the same result than the command above, you must run your pipex
 
 Where `infile`, `cmd1`, `cmd2` and `outfile` have the same purpuse than the command mentioned above.
 
-## Installation
+## Compilation
 
 To install this project, follow these steps:
 
@@ -72,6 +72,13 @@ For example:
 represents the command:
 ```bash
 << EOF cat | wc -l > outfile
+```
+
+## Compilation of Bonus
+
+Use the rule bonus to compile the project, instead of just using make
+```bash
+make bonus
 ```
 
 ## Tests
