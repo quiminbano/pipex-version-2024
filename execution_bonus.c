@@ -6,7 +6,7 @@
 /*   By: corellan <corellan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 18:49:28 by corellan          #+#    #+#             */
-/*   Updated: 2024/01/19 01:07:24 by corellan         ###   ########.fr       */
+/*   Updated: 2024/02/12 20:36:04 by corellan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ static void	check_error(t_pipex *pipex)
 		return ;
 	if (pipex->error_flag == NOPERMISIONPATH)
 		print_error(pipex->error_flag, pipex->path);
-	else if (!pipex->cmd[0])
+	else if (!pipex->cmd[0] && ft_strlen(pipex->cmd_tmp))
+		print_error(pipex->error_flag, pipex->cmd_tmp);
+	else if (!pipex->cmd[0] && !ft_strlen(pipex->cmd_tmp))
 		print_error(pipex->error_flag, "");
 	else
 		print_error(pipex->error_flag, pipex->cmd[0]);
